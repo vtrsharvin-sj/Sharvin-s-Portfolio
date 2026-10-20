@@ -13,7 +13,43 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  deploy-backend:
+    runs-on: ubuntu-latest
+    outputs:
+      server_url: ${{ steps.server-url.outputs.url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Cloudflare deployment secrets
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN" || { echo "Add CLOUDFLARE_API_TOKEN in repository Actions secrets."; exit 1; }
+          test -n "$CLOUDFLARE_ACCOUNT_ID" || { echo "Add CLOUDFLARE_ACCOUNT_ID in repository Actions secrets."; exit 1; }
+      - name: Deploy Cloudflare live server
+        id: deploy
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: '4.151.2'
+          command: deploy --config cloudflare/wrangler.toml
+      - name: Set secure WebSocket URL
+        id: server-url
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
+        run: |
+          node --input-type=module <<'NODE'
+          import { appendFileSync } from 'node:fs'
+          const deployed = new URL(process.env.DEPLOYMENT_URL || '')
+          if(deployed.protocol !== 'https:' || !deployed.hostname.endsWith('.workers.dev')) {
+            throw new Error('Cloudflare did not return a valid workers.dev deployment URL.')
+          }
+          appendFileSync(process.env.GITHUB_OUTPUT, `url=wss://${deployed.host}/api/live\n`)
+          NODE
+
   build:
+    needs: deploy-backend
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,7 +62,8 @@ jobs:
       - name: Build with the public backend URL
         run: npm run build:static
         env:
-          VITE_SERVER_URL: ${{ vars.VITE_SERVER_URL }}
+          VITE_SERVER_URL: ${{ needs.deploy-backend.outputs.server_url }}
+          REQUIRE_SERVER: '1'
       - name: Verify repository-path assets
         run: node scripts/check-pages-build.js
       - uses: actions/upload-pages-artifact@v5

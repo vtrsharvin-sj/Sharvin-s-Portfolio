@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server/index.js",
     "build:static": "node scripts/check-static-env.js && npm run build",
-    "test": "node --test server/*.test.js",
+    "test": "node --test server/*.test.js cloudflare/*.test.js",
     "dev": "vite --mode development",
     "build": "vite build --mode production",
     "preview": "vite preview",

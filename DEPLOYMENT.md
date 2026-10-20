@@ -6,34 +6,37 @@ Use Node.js 22 LTS. Run `npm ci`, `npm test`, `npm run build`, then `npm start`.
 Open http://localhost:3000. Leave `VITE_SERVER_URL` blank for this same-host setup.
 The production server serves only `dist`, plus `/healthz` and the `/api/live` WebSocket.
 
-## GitHub Pages (recommended workflow for this repository)
+## GitHub Pages and Cloudflare live server
 
-GitHub Pages hosts the frontend only. Complete the backend setup in the next section
-first; it applies to GitHub Pages as well as other static hosts.
+GitHub Pages serves the static portfolio. The included Cloudflare Worker handles the
+WebSocket connection, shared messages, circuit leaderboard, and counters. It stores
+state in a SQLite-backed Durable Object. Cloudflare supports Durable Object WebSockets;
+the free Workers plan has daily usage limits, so this is suitable for a small personal
+portfolio, not unlimited traffic.
+See Cloudflare's [WebSocket guidance](https://developers.cloudflare.com/durable-objects/best-practices/websockets/)
+and [Workers pricing and limits](https://developers.cloudflare.com/workers/platform/pricing/).
 
-1. Upload the project source to your GitHub repository, including hidden files
-   `.github/workflows/deploy-pages.yml` and `.npmrc`. Do not upload `node_modules`,
-   `dist`, `.env`, or `server/data`. Keep `package-lock.json`.
-2. Under repository **Settings → Pages → Build and deployment**, select **GitHub Actions**.
-3. Under **Settings → Secrets and variables → Actions → Variables**, add a repository
-   variable named `VITE_SERVER_URL` with your real `wss://YOUR-BACKEND-DOMAIN/api/live` URL.
-   This is a public URL, not a secret. The workflow deliberately fails with a clear
-   error if it is missing, so a broken live-feature deployment is not published.
-4. Set the backend's `ALLOWED_ORIGINS=https://vtrsharvin-sj.github.io`.
-   Origins never include the repository path. If you use a custom domain, allow its
-   exact HTTPS origin too and configure that domain in GitHub Pages settings.
-5. Push to `main` or `master`, or run **Actions → Deploy portfolio to GitHub Pages → Run workflow**.
-   Tests and the production build run before deployment. The deployment job provides
-   the final Pages URL.
+1. Create a Cloudflare account and enable its `workers.dev` subdomain under **Workers &
+   Pages**. Copy the Account ID shown in the Workers dashboard.
+2. Create a Cloudflare API token using the **Edit Cloudflare Workers** template, scoped
+   to only that account.
+3. In GitHub repository **Settings → Secrets and variables → Actions → Secrets**, add
+   `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN`. Never put the token in a public
+   file or repository variable.
+4. Under repository **Settings → Pages → Build and deployment**, select **GitHub Actions**.
+5. Push to `main` or `master`, or run **Actions → Deploy portfolio to GitHub Pages → Run
+   workflow**. The workflow deploys the Worker first, builds the frontend with its
+   generated secure WebSocket URL, then publishes Pages.
 
-The Vite base is `./`, supporting both `https://vtrsharvin-sj.github.io/REPOSITORY/`
-and a root/custom-domain site. Open the repository URL with its trailing slash.
-The workflow uploads only `dist`; GitHub does not run `npm start`.
-Re-run the workflow after changing `VITE_SERVER_URL`.
+The Worker permits the GitHub Pages origin `https://vtrsharvin-sj.github.io`. If you
+configure a different/custom frontend domain, add its exact origin to
+`ALLOWED_ORIGINS` in `cloudflare/wrangler.toml`. Origins never include a URL path.
+The Vite base is `./`, supporting both repository and root/custom-domain sites. The
+workflow uploads only `dist`; GitHub does not run `npm start`.
 
 Reference: [GitHub Pages custom workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
 
-## Persistent backend and other static hosts
+## Existing Node backend and other static hosts
 
 There are **two deployments**: the static portfolio and a persistent Node backend.
 Uploading `dist` alone does not provide shared messages, leaderboard, cookies, or altar events.
@@ -73,7 +76,8 @@ to serve everything from one origin.
 
 ## Operational limitations
 
-- Keep backups of `/data/state.json`; do not commit it. Messages are public, latest 30 only.
+- For the Node backend, keep backups of `/data/state.json`; do not commit it. Cloudflare
+  backend state is stored in its Durable Object. Messages are public, latest 30 only.
 - Identity is an anonymous browser UUID. Checkpoints are validated for structure/timing,
   but scores are client-submitted and are **not cheat-proof**. Do not attach prizes to scores.
 - Payload limits, same-origin/allowlist checks and per-connection action cooldowns exist.
@@ -81,6 +85,6 @@ to serve everything from one origin.
   public launch, configure host/proxy connection rate limits and a message moderation policy.
 - Browser origin checks do not stop non-browser clients. No account login, email delivery,
   moderation dashboard, or authoritative racing service is included.
-- This package does not create hosting accounts, purchase services, configure DNS, or publish
-  automatically. A public backend URL and persistent host are still required.
+- This package cannot create a Cloudflare account or API token. Add the two GitHub secrets
+  before running the workflow; it deploys the Worker and builds the Pages site automatically.
 - Retain `license.md` and original engine/asset attribution when publishing.

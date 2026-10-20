@@ -1,0 +1,19 @@
+name = "sharvin-portfolio-live"
+main = "worker.js"
+compatibility_date = "2026-10-20"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+[observability]
+enabled = true
+
+[vars]
+ALLOWED_ORIGINS = "https://vtrsharvin-sj.github.io"
+
+[[durable_objects.bindings]]
+name = "LIVE_ROOM"
+class_name = "LiveRoom"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["LiveRoom"]
