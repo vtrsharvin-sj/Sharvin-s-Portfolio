@@ -28,7 +28,7 @@ export class SocialArea extends Area
         this.setLinks()
         this.setFans()
         this.setOnlyFans()
-        this.setStatue()
+        this.removeStatue()
         this.removeLegacySocials()
         // this.setFWA()
         this.setAchievement()
@@ -307,30 +307,16 @@ export class SocialArea extends Area
         )
     }
 
-    setStatue()
+    removeStatue()
     {
-        this.statue = {}
         const reference = this.references.items.get('statue')[0]
-        this.statue.body = reference.userData.object.physical.body
-        // Replace the original owner's portrait with a small AI robot sculpture.
-        reference.traverse(child => { if(child.isMesh) child.visible = false })
-        if(reference.isMesh) reference.material = new THREE.MeshBasicNodeMaterial({ visible: false })
-        reference.visible = true
-        const shell = new MeshDefaultMaterial({ colorNode: color('#b6e1c0') })
-        const robot = new THREE.Group()
-        const body = new THREE.Mesh(new THREE.BoxGeometry(1.1, 1.4, 0.7), shell)
-        body.position.y = 0.8
-        const head = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.8, 0.8), shell)
-        head.position.y = 1.95
-        robot.add(body, head)
-        for(const x of [-0.3, 0.3])
-        {
-            const eye = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.18, 0.1), new MeshDefaultMaterial({ colorNode: color('#251f2b') }))
-            eye.position.set(x, 2, 0.45)
-            robot.add(eye)
-        }
-        reference.add(robot)
-        this.statue.down = false
+        const object = reference.userData.object
+        const visual = object.visual.object3D
+        visual.visible = false
+        // Keep area visibility changes from restoring the removed sculpture.
+        this.objects.hideable = this.objects.hideable.filter(item => item !== visual)
+        object.physical.body.setEnabled(false)
+        for(const collider of object.physical.colliders || []) collider.setEnabled(false)
     }
 
     removeLegacySocials()
@@ -442,17 +428,6 @@ export class SocialArea extends Area
                 this.fans.instancedGroup.updateBoundings()
         }
     
-        if(this.statue && !this.statue.down && !this.statue.body.isSleeping())
-        {
-            const statueUp = new THREE.Vector3(0, 1, 0)
-            statueUp.applyQuaternion(this.statue.body.rotation())
-            if(statueUp.y < 0.25)
-            {
-                this.statue.down = true
-                this.game.achievements.setProgress('statueDown', 1)
-            }
-        }
-
         for(const object of this.fans.objects)
         {
             if(!object.physical.body.isSleeping() && object.physical.body.isEnabled())
