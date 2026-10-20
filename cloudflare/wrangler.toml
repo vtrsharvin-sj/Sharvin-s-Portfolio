@@ -9,7 +9,7 @@ workers_dev = true
 enabled = true
 
 [vars]
-ALLOWED_ORIGINS = "https://vtrsharvin-sj.github.io"
+ALLOWED_ORIGINS = "https://vtrsharvin-sj.github.io,https://sharvinsj.com,https://www.sharvinsj.com"
 
 [[durable_objects.bindings]]
 name = "LIVE_ROOM"
