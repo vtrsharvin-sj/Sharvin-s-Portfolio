@@ -86,4 +86,4 @@ to serve everything from one origin.
   moderation dashboard, or authoritative racing service is included.
 - This package cannot create a Cloudflare account or API token. Add the two GitHub secrets
   before running the workflow; it deploys the Worker and builds the Pages site automatically.
-- Retain `license.md` and original engine/asset attribution when publishing.
+- Retain `LICENSE` and original engine/asset attribution when publishing.

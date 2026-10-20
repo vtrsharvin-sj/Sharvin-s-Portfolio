@@ -52,4 +52,4 @@ Pushing to `main` runs the GitHub Actions workflow. It builds the site, deploys 
 
 ## Credits and licenses
 
-The original portfolio engine and assets retain their license notices. See [license.md](license.md) and [the music license](static/sounds/musics/license.md) for details.
+The original portfolio engine and assets retain their license notices. See [LICENSE](LICENSE) and [the music license](static/sounds/musics/license.md) for details.
