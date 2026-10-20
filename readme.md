@@ -1,177 +1,55 @@
 # Sharvin's Portfolio
 
-Portfolio for Sharvin SJ, a 13-year-old AI / ML engineer and developer.
+An interactive 3D portfolio for Sharvin SJ — a 13-year-old AI and machine-learning engineer from Coimbatore, India. Explore projects, achievements, social links, and a playable circuit in a small open-world scene.
 
-Contacts: sharvin@sharvinsj.com · GitHub vtrsharvin-sj · X/LinkedIn/Discord sharvinsj · Instagram sharvin._.777.
+**Visit the portfolio:** [vtrsharvin-sj.github.io/Sharvin-s-Portfolio](https://vtrsharvin-sj.github.io/Sharvin-s-Portfolio/)
 
-The hamburger menu and in-world Projects interaction open the same My Projects section.
-Project content is maintained in `sources/data/portfolio.js`; social links in `sources/data/social.js`.
-Original engine and asset attribution is retained in `license.md`.
+## Preview
 
-## Setup
+![Portfolio home screen](static/ui/previews/home.webp)
 
-### Local live features
+| Projects | Achievements | Circuit |
+| --- | --- | --- |
+| ![Projects menu](static/ui/previews/projects.png) | ![Achievements menu](static/ui/previews/achievements.webp) | ![Circuit scene](static/ui/previews/circuit.webp) |
 
-`npm run dev` starts both the site and its WebSocket backend on the same port.
-`npm run build` followed by `npm run preview` also includes the backend for local testing.
-Leave `VITE_SERVER_URL` blank to use `/api/live` on the current host.
-Messages (one per browser session, latest 30), daily UTC top-ten race scores, cookies,
-and altar contributions persist in `server/data/state.json`. Back up that directory.
-Race submissions require all nine checkpoint timestamps; one best time per session is retained.
-Ten altar contributions trigger a shared 30-second storm.
+## Run it locally
 
-Run `npm test` for isolated live-server integration tests. Test data uses a temporary directory.
-Use `npm run build` then `npm start` for the production server.
-See [DEPLOYMENT.md](DEPLOYMENT.md) for GitHub Pages (automated workflow included),
-Vercel/Netlify static hosting plus a separate
-persistent backend, Docker, TLS, origins, backups, and public-launch limitations.
-The current UUID identity and client-supplied checkpoints are not cheat-proof.
-Easter promotional offers remain empty; no fake discount codes are generated.
+You need [Node.js 22](https://nodejs.org/) and npm.
 
-### Install
-
-Create `.env` file based on `.env.example`
-
-Download and install [Node.js](https://nodejs.org/en/download/) then run this followed commands:
-
-``` bash
-# Install dependencies
-npm ci --legacy-peer-deps
-
-# Serve at localhost:5173
+```bash
+git clone https://github.com/vtrsharvin-sj/Sharvin-s-Portfolio.git
+cd Sharvin-s-Portfolio
+npm ci
 npm run dev
-
-# Build for production in the dist/ directory
-npm run build
 ```
 
-## Game loop
+Open the local address printed by Vite (usually [http://localhost:5173](http://localhost:5173)). The development command starts the site and its live WebSocket server.
 
-#### 0
+Useful commands:
 
-- Time
-- Inputs
+```bash
+npm test       # Run server integration tests
+npm run build  # Create the production frontend in dist/
+npm start      # Run the production site and live server
+```
 
-#### 1
+## Update portfolio content
 
-- Player:pre-physics (Inputs)
+- Projects and portfolio details: `sources/data/portfolio.js`
+- Social links: `sources/data/social.js`
+- Deployment steps and hosting notes: [DEPLOYMENT.md](DEPLOYMENT.md)
 
-#### 2
+## Publish
 
-- PhysicalVehicle:pre-physics (Player:pre-physics)
+Pushing to `main` runs the GitHub Actions workflow. It builds the site, deploys the live server to Cloudflare Workers, and publishes the frontend to GitHub Pages. The repository needs the `CLOUDFLARE_API_TOKEN` Actions secret; setup instructions are in [DEPLOYMENT.md](DEPLOYMENT.md). Never commit API tokens or other secrets.
 
-#### 3
+## Contact
 
-- Physics
+- Email: [sharvin@sharvinsj.com](mailto:sharvin@sharvinsj.com)
+- GitHub: [@vtrsharvin-sj](https://github.com/vtrsharvin-sj)
+- X: [@sharvinsj](https://x.com/sharvinsj)
+- Portfolio: [sharvinsj.com](https://sharvinsj.com)
 
-#### 4
+## Credits and licenses
 
-- PhysicsWireframe (Physics)
-- Objects (Physics)
-
-#### 5
-
-- PhysicalVehicle:post-physics (Player:pre-physics)
-
-#### 6
-
-- Player:post-physics (Physics, PhysicalVehicle:post-physics)
-
-#### 7
-
-- View (Inputs, Player:post-physics)
-
-#### 8
-
-- Intro
-- DayCycles
-- YearCycles
-- Weather (DayCycles, YearCycles)
-- Zones (Player:post-physics)
-- VisualVehicle (PhysicalVehicle:post-physics, Inputs, Player:post-physics, View)
-
-#### 9
-
-- Wind (Weather)
-- Lighting (DayCycles, View)
-- Tornado (DayCycles, PhysicalVehicle)
-- InteractivePoints (Player:post-physics)
-- Tracks (VisualVehicle)
-
-#### 10
-
-- Area++ (View, PhysicalVehicle:post-physics, Player:post-physics, Wind)
-- Foliage (VisualVehicle, View)
-- Fog (View)
-- Reveal (DayCycles)
-- Terrain (Tracks)
-- Trails (PhysicalVehicle)
-- Floor (View)
-- Grass (View, Wind)
-- Leaves (View, PhysicalVehicle)
-- Lightnings (View, Weather)
-- RainLines (View, Weather, Reveal)
-- Snow (View, Weather, Reveal, Tracks)
-- VisualTornado (Tornado)
-- WaterSurface (Weather, View)
-- Benches (Objects)
-- Bricks (Objects)
-- ExplosiveCrates (Objects)
-- Fences (Objects)
-- Lanterns (Objects)
-- Whispers (Player)
-
-#### 13
-
-- InstancedGroup (Objects, [SpecificObjects])
-
-#### 14
-
-- Audio (View, Objects)
-- Notifications
-- Title (PhysicalVehicle:post-physics)
-
-#### 998
-
-- Rendering
-
-#### 999
-
-- Monitoring
-
-## Blender
-
-### Export
-
-- Mute the palette texture node (loaded and set in Three.js `Material` directly)
-- Use corresponding export presets
-- Don't use compression (will be done later)
-
-### Compress
-
-Run `npm run compress`
-
-Will do the following
-
-#### GLB
-
-- Traverses the `static/` folder looking for glb files (ignoring already compressed files)
-- Compresses embeded texture with `etc1s --quality 255` (lossy, GPU friendly)
-- Generates new files to preserve originals
-
-#### Texture files
-
-- Traverses the `static/` folder looking for `png|jpg` files (ignoring non-model related folders)
-- Compresses with default preset to `--encode etc1s --qlevel 255` (lossy, GPU friendly) or specific preset according to path
-- Generates new files to preserve originals
-
-#### UI files
-
-- Traverses the `static/ui.` folder looking for `png|jpg` files
-- Compresses to WebP
-
-#### Resources
-
-- https://gltf-transform.dev/cli
-- https://github.com/KhronosGroup/KTX-Software?tab=readme-ov-file
-- https://github.khronos.org/KTX-Software/ktxtools/toktx.html
+The original portfolio engine and assets retain their license notices. See [license.md](license.md) and [the music license](static/sounds/musics/license.md) for details.
