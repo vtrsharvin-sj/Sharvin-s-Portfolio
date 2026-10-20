@@ -1,0 +1,11 @@
+.DS_Store
+node_modules
+server/data/
+dist
+.vercel
+.VSCodeCounter
+.env*
+!.env.example
+.autosave
+.wav
+!static/sounds/music/*.wav

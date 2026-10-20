@@ -1,0 +1,49 @@
+.sharvin-preview { height:100%; padding:clamp(20px,5vw,50px); display:flex; flex-direction:column; justify-content:center; gap:18px; background:radial-gradient(ellipse at top left,#495455,#251f2b 70%); }
+.sharvin-preview span { color:#b6e1c0; letter-spacing:.18em; font-size:12px; font-weight:900; }
+.sharvin-preview strong { font:900 clamp(32px,5vw,64px)/1 Nunito,sans-serif; color:#fff4df; }
+.sharvin-preview p { line-height:1.6; color:#dacbdf; }
+.project-card { padding:22px 0; border-bottom:1px solid #ffffff24; }
+.project-number { font-size:11px; letter-spacing:.06em; color:#b6e1c0; }
+.project-card h2 { font-size:21px; line-height:1.3; margin:10px 0; }
+.project-card p { font-size:14px; line-height:1.7; color:#e0d4e4; }
+.project-card a { display:inline-block; margin-top:12px; color:#b6e1c0; }
+.project-cards { margin-bottom:24px; }
+.sharvin-socials { display:flex; gap:14px; flex-wrap:wrap; line-height:1.7; }
+.sharvin-socials a, .sharvin-socials a:visited { color:inherit; text-decoration-color:#ffffff60; text-underline-offset:4px; }
+.sharvin-socials a:hover { text-decoration-color:#ffffff; }
+.home-content .sharvin-socials { font-size:15px; gap:8px 18px; }
+.home-content h2.title { font-size:28px; margin-bottom:16px; }
+.home-content .js-portfolio-projects { margin-bottom:24px; }
+.menu .navigation { left:0; max-width:calc(100% - 64px); overflow-x:auto; overflow-y:hidden; scrollbar-width:none; }
+.menu .navigation::-webkit-scrollbar { display:none; }
+.menu .navigation .item { flex:0 0 40px; }
+.projects-tab { font-weight:900; }
+.projects-content [hidden] { display:none !important; }
+.projects-content .js-project-back { margin-bottom:24px; }
+.projects-content .js-project-title { overflow-wrap:anywhere; }
+.projects-content .js-project-title:focus-visible { outline:2px solid #b6e1c0; outline-offset:6px; }
+.menu .projects-preview .background { object-position:65% center; }
+.menu .options-preview .background { object-position:65% center; }
+.project-card { padding:18px 0 22px; }
+.project-number { color:#c9bdce; letter-spacing:0; }
+.project-card h2 { font-size:20px; font-weight:700; }
+.project-card a, .project-card a:visited { color:#fff; text-decoration-color:#ffffff60; text-underline-offset:4px; }
+.social-eyebrow { font-size:10px; letter-spacing:.15em; color:#b6e1c0; font-weight:800; }
+.social-monogram { margin-top:24px; font-size:80px; font-weight:900; letter-spacing:-.08em; color:#b6e1c0; }
+.social-monogram span { vertical-align:top; font-size:28px; margin-left:18px; }
+.social-directory { display:grid; gap:14px; margin-top:28px; }
+.social-card { padding:20px; border:1px solid #ffffff20; border-radius:12px; background:#ffffff05; }
+.social-card-heading { display:flex; align-items:center; gap:14px; }
+.social-symbol { display:grid; place-items:center; flex:0 0 44px; height:44px; border-radius:12px; background:#b6e1c018; color:#b6e1c0; font-size:24px; font-weight:900; }
+.social-card h2 { font-size:20px; margin:0 0 3px; }
+.social-card-heading p, .discord-note { font-size:12px; color:#cfc3d4; line-height:1.6; margin:0; }
+.social-handle { font-size:16px; margin:18px 0; color:#fff4df; overflow-wrap:anywhere; user-select:text; }
+.social-actions { display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between; }
+.social-actions a { font-size:14px; color:#b6e1c0; text-underline-offset:4px; }
+.social-copy { font:inherit; font-size:12px; cursor:pointer; color:#eee6f0; background:transparent; border:1px solid #ffffff40; border-radius:6px; padding:8px 10px; }
+.social-copy:hover { background:#ffffff12; }
+.social-actions :focus-visible { outline:2px solid #b6e1c0; outline-offset:4px; }
+.discord-note { margin-bottom:16px; }
+.social-copy-status { font-size:13px; color:#b6e1c0; overflow-wrap:anywhere; }
+@media (orientation:portrait) { .social-monogram { display:none; } .social-card { padding:16px; } }
+@media (orientation:portrait) { .sharvin-preview { gap:8px; padding:16px 24px; } .sharvin-preview strong { font-size:28px; } .sharvin-preview p { font-size:12px; margin:0; } }

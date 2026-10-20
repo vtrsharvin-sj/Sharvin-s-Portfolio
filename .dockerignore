@@ -1,0 +1,8 @@
+*
+!package.json
+!package-lock.json
+!.npmrc
+!server/
+!server/*.js
+server/*.test.js
+server/data/

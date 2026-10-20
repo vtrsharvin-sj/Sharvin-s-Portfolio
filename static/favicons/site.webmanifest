@@ -1,0 +1,16 @@
+{
+  "name": "Sharvin SJ — AI / ML Engineer",
+  "short_name": "Sharvin SJ",
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "theme_color": "#251f2b",
+  "background_color": "#251f2b",
+  "display": "standalone"
+}
+
