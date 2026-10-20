@@ -17,12 +17,11 @@ See Cloudflare's [WebSocket guidance](https://developers.cloudflare.com/durable-
 and [Workers pricing and limits](https://developers.cloudflare.com/workers/platform/pricing/).
 
 1. Create a Cloudflare account and enable its `workers.dev` subdomain under **Workers &
-   Pages**. Copy the Account ID shown in the Workers dashboard.
+   Pages**. The account ID is already configured in `cloudflare/wrangler.toml`.
 2. Create a Cloudflare API token using the **Edit Cloudflare Workers** template, scoped
    to only that account.
 3. In GitHub repository **Settings → Secrets and variables → Actions → Secrets**, add
-   `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN`. Never put the token in a public
-   file or repository variable.
+   `CLOUDFLARE_API_TOKEN`. Never put the token in a public file or repository variable.
 4. Under repository **Settings → Pages → Build and deployment**, select **GitHub Actions**.
 5. Push to `main` or `master`, or run **Actions → Deploy portfolio to GitHub Pages → Run
    workflow**. The workflow deploys the Worker first, builds the frontend with its

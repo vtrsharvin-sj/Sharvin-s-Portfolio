@@ -1,5 +1,6 @@
 name = "sharvin-portfolio-live"
 main = "worker.js"
+account_id = "eb7b08e39f4e738e3622fd41e4a8fc11"
 compatibility_date = "2026-10-20"
 compatibility_flags = ["nodejs_compat"]
 workers_dev = true
