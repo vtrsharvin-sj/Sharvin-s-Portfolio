@@ -2,7 +2,7 @@
 
 An interactive 3D portfolio for Sharvin SJ — a 13-year-old AI and machine-learning engineer from Coimbatore, India. Explore projects, achievements, social links, and a playable circuit in a small open-world scene.
 
-**Visit the portfolio:** [vtrsharvin-sj.github.io/Sharvin-s-Portfolio](https://vtrsharvin-sj.github.io/Sharvin-s-Portfolio/)
+**Visit the portfolio:** [vtrsharvin-sj.github.io/Sharvin-s-Portfolio](https://sharvinsj.com)
 
 ## Preview
 
